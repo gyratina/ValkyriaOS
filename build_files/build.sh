@@ -2,26 +2,88 @@
 
 set -ouex pipefail
 
-# Copy the contents of system_files/ of the git repo to /
+# 1. DNF Speedup
+sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
+
+# 2. Copy system files from repo to image root
 cp -avf "/ctx/system_files"/. /
 
-### Install packages
+# 3. Enable Repositories
+# RPM Fusion Free & Nonfree (Codec, FFmpeg, OBS plugins)
+dnf5 -y install \
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+# Terra Repository (per Zed Editor e Ghostty)
+curl -fsSL https://github.com/terrapkg/subatomic-repos/raw/main/terra.repo -o /etc/yum.repos.d/terra.repo
+dnf5 -y install terra-release
 
-# this installs a package from fedora repos
-dnf5 install -y tmux
+# COPR Dank Material Shell (DMS + Quickshell)
+curl --output-dir "/etc/yum.repos.d/" \
+  --remote-name "https://copr.fedorainfracloud.org/coprs/avengemedia/dms/repo/fedora-$(rpm -E %fedora)/avengemedia-dms-fedora-$(rpm -E %fedora).repo"
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# COPR Bibata Cursors (Cursore moderno per Niri)
+curl -Lo /etc/yum.repos.d/peterwu.repo \
+  https://copr.fedorainfracloud.org/coprs/peterwu/rendezvous/repo/fedora-$(rpm -E %fedora)/peterwu-rendezvous-fedora-$(rpm -E %fedora).repo
 
-#### Example for enabling a System Unit File
+# 4. Install Packages
+# Virtualizzazione KVM/QEMU & Container
+dnf5 -y install \
+  qemu-kvm \
+  libvirt \
+  virt-manager \
+  podman-compose \
+  flatpak-builder
 
+# Tiling Window Manager (Niri) & Dank Shell
+dnf5 -y install \
+  niri \
+  quickshell \
+  dms \
+  xdg-desktop-portal-wlr \
+  wlr-randr
+
+# Terminale ed Editor
+dnf5 -y install \
+  ghostty \
+  zed
+
+# Autenticazione Polkit, Utilità di sistema & Cursori
+dnf5 -y install \
+  lxpolkit \
+  lxqt-openssh-askpass \
+  iotop \
+  sysstat \
+  parallel \
+  just \
+  seahorse \
+  android-tools \
+  iperf3 \
+  bibata-cursor-themes
+
+# Multimedia, Codec & OBS Studio (con accelerazione hardware VA-API per AMD)
+dnf5 -y install \
+  ffmpeg \
+  x264-libs \
+  obs-studio \
+  obs-studio-plugin-x264 \
+  libva-utils \
+  mpv \
+  --allowerasing
+
+# 5. Enable System Services
 systemctl enable podman.socket
+systemctl enable libvirtd.service
+
+# 6. Default User Skeleton / Dotfiles Configuration
+if [ -d "/ctx/dot_config" ]; then
+  mkdir -p /etc/skel/.config
+  cp -rf /ctx/dot_config/* /etc/skel/.config/
+fi
+
+# 7. GLib Schemas compilation
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+# 8. Clean up DNF cache to reduce final image size
+dnf5 -y clean all
+rm -rf /run/dnf /run/selinux-policy /var/lib/dnf

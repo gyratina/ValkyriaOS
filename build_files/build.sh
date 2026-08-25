@@ -23,8 +23,9 @@ curl --output-dir "/etc/yum.repos.d/" \
   --remote-name "https://copr.fedorainfracloud.org/coprs/avengemedia/dms/repo/fedora-$(rpm -E %fedora)/avengemedia-dms-fedora-$(rpm -E %fedora).repo"
 
 # COPR Bibata Cursors (Cursore moderno per Niri)
-curl -Lo /etc/yum.repos.d/peterwu.repo \
-  https://copr.fedorainfracloud.org/coprs/peterwu/rendezvous/repo/fedora-$(rpm -E %fedora)/peterwu-rendezvous-fedora-$(rpm -E %fedora).repo
+# curl -Lo /etc/yum.repos.d/peterwu.repo \
+#   https://copr.fedorainfracloud.org/coprs/peterwu/rendezvous/repo/fedora-$(rpm -E %fedora)/peterwu-rendezvous-fedora-$(rpm -E %fedora).repo
+
 
 # 4. Install Packages
 # Virtualizzazione KVM/QEMU & Container
@@ -40,15 +41,18 @@ dnf5 -y install \
   niri \
   quickshell \
   dms \
+  greetd \
+  dms-greeter \
   xdg-desktop-portal-wlr \
-  wlr-randr
+  wlr-randr \
+  --allowerasing
 
 # Terminale ed Editor
 dnf5 -y install \
   ghostty \
   zed
 
-# Autenticazione Polkit, Utilità di sistema & Cursori
+# Autenticazione Polkit, Utilità di sistema & Strumenti
 dnf5 -y install \
   lxpolkit \
   lxqt-openssh-askpass \
@@ -58,8 +62,14 @@ dnf5 -y install \
   just \
   seahorse \
   android-tools \
-  iperf3 \
-  bibata-cursor-themes
+  iperf3
+  # bibata-cursor-themes
+
+# Installazione Cursori McMojave
+git clone --depth 1 https://github.com/vinceliuice/McMojave-cursors.git /tmp/mcmojave
+mkdir -p /usr/share/icons
+cp -rf /tmp/mcmojave/dist/* /usr/share/icons/ 2>/dev/null || /tmp/mcmojave/install.sh -d /usr/share/icons
+rm -rf /tmp/mcmojave
 
 # Multimedia, Codec & OBS Studio (con accelerazione hardware VA-API per AMD)
 dnf5 -y install \
@@ -71,9 +81,26 @@ dnf5 -y install \
   mpv \
   --allowerasing
 
-# 5. Enable System Services
+# 5. Display Manager & System Services
+# Configurazione Greetd con DMS Greeter
+mkdir -p /etc/greetd/
+cat > /etc/greetd/config.toml << EOF
+[terminal]
+vt = 1
+[default_session]
+user = "greeter"
+command = "dms-greeter"
+EOF
+
+# Imposta Greetd come Display Manager predefinito
+rm -f /etc/systemd/system/display-manager.service
+ln -s /usr/lib/systemd/system/greetd.service /etc/systemd/system/display-manager.service
+systemctl enable --force greetd.service
+
+# Abilitazione servizi di sistema
 systemctl enable podman.socket
 systemctl enable libvirtd.service
+systemctl enable default-flatpaks.service
 
 # 6. Default User Skeleton / Dotfiles Configuration
 if [ -d "/ctx/dot_config" ]; then

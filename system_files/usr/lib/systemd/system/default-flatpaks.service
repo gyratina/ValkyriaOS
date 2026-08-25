@@ -1,0 +1,22 @@
+[Unit]
+Description=Install Default Flatpaks for ValkyriaOS
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=!/var/lib/valkyriaos-flatpaks-installed
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c '\
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo; \
+  flatpak remote-delete --force anime-game-launcher 2>/dev/null || true; \
+  flatpak uninstall -y --system --noninteractive org.mozilla.Thunderbird moe.launcher.an-anime-game-launcher || true; \
+  if [ -f /etc/default-flatpaks.list ]; then \
+    while read -r app; do \
+      [ -n "$app" ] && [[ ! "$app" =~ ^# ]] && flatpak install -y --system --noninteractive flathub "$app" || true; \
+    done < /etc/default-flatpaks.list; \
+  fi; \
+  touch /var/lib/valkyriaos-flatpaks-installed'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

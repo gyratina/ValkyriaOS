@@ -95,7 +95,9 @@ dnf5 -y install \
 curl -fsSL https://downloads.nordcdn.com/apps/linux/install.sh | sh -s -- -n -p nordvpn-gui
 
 # Spotatui (Spotify TUI)
-SPOTATUI_INSTALL_DIR="/usr/bin" curl -fsSL https://spotatui.com/install.sh | bash
+curl -fsSL https://github.com/LargeModGames/spotatui/releases/latest/download/spotatui-linux-x86_64.tar.gz -o /tmp/spotatui.tar.gz
+tar -xzf /tmp/spotatui.tar.gz -C /usr/bin/
+rm -f /tmp/spotatui.tar.gz
 
 # 6. Configurazione Shell di Default
 # Imposta Zsh come shell predefinita per i nuovi utenti

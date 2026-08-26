@@ -2,8 +2,8 @@
 
 set -ouex pipefail
 
-# 1. DNF Speedup
-sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
+# 1. DNF Speedup & Fresh Metadata
+sed -i '/^\[main\]/a max_parallel_downloads=10\nmetadata_expire=0' /etc/dnf/dnf.conf
 
 # 2. Copy system files from repo to image root
 cp -avf "/ctx/system_files"/. /

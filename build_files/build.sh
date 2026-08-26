@@ -52,6 +52,14 @@ dnf5 -y install \
   ghostty \
   zed
 
+# Shell ZSH & Strumenti CLI
+dnf5 -y install \
+  zsh \
+  zoxide \
+  zsh-autosuggestions \
+  zsh-syntax-highlighting \
+  util-linux-user
+
 # Autenticazione Polkit, Utilità di sistema & Strumenti
 dnf5 -y install \
   lxpolkit \
@@ -88,6 +96,10 @@ curl -fsSL https://downloads.nordcdn.com/apps/linux/install.sh | sh -s -- -n -p 
 
 # Spotatui (Spotify TUI)
 SPOTATUI_INSTALL_DIR="/usr/bin" curl -fsSL https://spotatui.com/install.sh | bash
+
+# 6. Configurazione Shell di Default
+# Imposta Zsh come shell predefinita per i nuovi utenti
+sed -i 's|^SHELL=.*|SHELL=/bin/zsh|' /etc/default/useradd
 
 # 6. Display Manager & System Services
 # Configurazione Greetd con DMS Greeter

@@ -71,17 +71,25 @@ mkdir -p /usr/share/icons
 cp -rf /tmp/mcmojave/dist/* /usr/share/icons/ 2>/dev/null || /tmp/mcmojave/install.sh -d /usr/share/icons
 rm -rf /tmp/mcmojave
 
-# Multimedia, Codec & OBS Studio (con accelerazione hardware VA-API per AMD)
+# Multimedia, Codec, Gaming & OBS Studio (con accelerazione hardware VA-API per AMD)
 dnf5 -y install \
   ffmpeg \
   x264-libs \
   obs-studio \
   obs-studio-plugin-x264 \
   libva-utils \
+  mangohud \
   mpv \
   --allowerasing
 
-# 5. Display Manager & System Services
+# 5. Installazione Software Aggiuntivo
+# NordVPN (CLI + GUI)
+curl -fsSL https://downloads.nordcdn.com/apps/linux/install.sh | sh -s -- -n -p nordvpn-gui
+
+# Spotatui (Spotify TUI)
+SPOTATUI_INSTALL_DIR="/usr/bin" curl -fsSL https://spotatui.com/install.sh | bash
+
+# 6. Display Manager & System Services
 # Configurazione Greetd con DMS Greeter
 mkdir -p /etc/greetd/
 cat > /etc/greetd/config.toml << EOF
@@ -101,6 +109,7 @@ systemctl enable --force greetd.service
 systemctl enable podman.socket
 systemctl enable libvirtd.service
 systemctl enable default-flatpaks.service
+systemctl enable nordvpnd.service
 
 # 6. Default User Skeleton / Dotfiles Configuration
 if [ -d "/ctx/dot_config" ]; then

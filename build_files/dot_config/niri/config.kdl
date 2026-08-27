@@ -271,6 +271,7 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // Start Dank Material Shell and Polkit agent at startup
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP=niri"
 spawn-at-startup "dms" "run"
 spawn-sh-at-startup "lxpolkit"
 

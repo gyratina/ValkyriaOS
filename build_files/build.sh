@@ -41,8 +41,6 @@ dnf5 -y install \
   niri \
   quickshell \
   dms \
-  greetd \
-  dms-greeter \
   xdg-desktop-portal-wlr \
   wlr-randr \
   --allowerasing
@@ -73,10 +71,14 @@ dnf5 -y install \
   iperf3
   # bibata-cursor-themes
 
-# Installazione Cursori McMojave
+# Installazione e configurazione Cursori McMojave come predefiniti
 git clone --depth 1 https://github.com/vinceliuice/McMojave-cursors.git /tmp/mcmojave
-mkdir -p /usr/share/icons
-cp -rf /tmp/mcmojave/dist/* /usr/share/icons/ 2>/dev/null || /tmp/mcmojave/install.sh -d /usr/share/icons
+mkdir -p /usr/share/icons/McMojave-cursors /usr/share/icons/default
+cp -rf /tmp/mcmojave/dist/* /usr/share/icons/McMojave-cursors/
+cat > /usr/share/icons/default/index.theme << 'EOF'
+[Icon Theme]
+Inherits=McMojave-cursors
+EOF
 rm -rf /tmp/mcmojave
 
 # Multimedia, Codec, Gaming & OBS Studio (con accelerazione hardware VA-API per AMD)
@@ -87,7 +89,6 @@ dnf5 -y install \
   obs-studio-plugin-x264 \
   libva-utils \
   mangohud \
-  mpv \
   --allowerasing
 
 # 5. Installazione Software Aggiuntivo
@@ -104,20 +105,8 @@ rm -f /tmp/spotatui.tar.gz
 sed -i 's|^SHELL=.*|SHELL=/bin/zsh|' /etc/default/useradd
 
 # 6. Display Manager & System Services
-# Configurazione Greetd con DMS Greeter
-mkdir -p /etc/greetd/
-cat > /etc/greetd/config.toml << EOF
-[terminal]
-vt = 1
-[default_session]
-user = "greeter"
-command = "dms-greeter"
-EOF
-
-# Imposta Greetd come Display Manager predefinito
-rm -f /etc/systemd/system/display-manager.service
-ln -s /usr/lib/systemd/system/greetd.service /etc/systemd/system/display-manager.service
-systemctl enable --force greetd.service
+# Abilitazione GDM (Display Manager ufficiale che supporta nativamente Niri e GNOME)
+systemctl enable gdm.service
 
 # Abilitazione servizi di sistema
 systemctl enable podman.socket
@@ -134,6 +123,28 @@ fi
 # 7. GLib Schemas compilation
 glib-compile-schemas /usr/share/glib-2.0/schemas/
 
-# 8. Clean up DNF cache to reduce final image size
+# 8. Branding Ufficiale ValkyriaOS (Identità per fastfetch, GNOME Settings e os-release)
+sed -i 's|^NAME=.*|NAME="ValkyriaOS"|' /usr/lib/os-release
+sed -i 's|^PRETTY_NAME=.*|PRETTY_NAME="ValkyriaOS"|' /usr/lib/os-release
+sed -i 's|^ID=.*|ID=valkyriaos|' /usr/lib/os-release
+sed -i 's|^ID_LIKE=.*|ID_LIKE="bluefin fedora"|' /usr/lib/os-release
+sed -i 's|^VARIANT=.*|VARIANT="ValkyriaOS"|' /usr/lib/os-release
+sed -i 's|^VARIANT_ID=.*|VARIANT_ID=valkyriaos|' /usr/lib/os-release
+sed -i 's|^HOME_URL=.*|HOME_URL="https://github.com/gyratina/ValkyriaOS"|' /usr/lib/os-release
+sed -i 's|^DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://github.com/gyratina/ValkyriaOS"|' /usr/lib/os-release
+sed -i 's|^SUPPORT_URL=.*|SUPPORT_URL="https://github.com/gyratina/ValkyriaOS/issues"|' /usr/lib/os-release
+sed -i 's|^BUG_REPORT_URL=.*|BUG_REPORT_URL="https://github.com/gyratina/ValkyriaOS/issues"|' /usr/lib/os-release
+if [ -f /etc/default/grub ]; then
+  sed -i 's|^GRUB_DISTRIBUTOR=.*|GRUB_DISTRIBUTOR="ValkyriaOS"|' /etc/default/grub
+fi
+if [ -f /usr/share/ublue-os/image-info.json ]; then
+  sed -i 's/"image-name": .*/"image-name": "valkyriaos",/' /usr/share/ublue-os/image-info.json
+  sed -i 's/"image-vendor": .*/"image-vendor": "gyratina",/' /usr/share/ublue-os/image-info.json
+fi
+
+# 8. Rimozione pacchetti non voluti
+dnf5 -y remove alacritty || true
+
+# 9. Clean up DNF cache to reduce final image size
 dnf5 -y clean all
 rm -rf /run/dnf /run/selinux-policy /var/lib/dnf

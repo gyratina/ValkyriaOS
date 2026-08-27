@@ -22,7 +22,11 @@ dnf5 -y install terra-release
 curl --output-dir "/etc/yum.repos.d/" \
   --remote-name "https://copr.fedorainfracloud.org/coprs/avengemedia/dms/repo/fedora-$(rpm -E %fedora)/avengemedia-dms-fedora-$(rpm -E %fedora).repo"
 
-# COPR Bibata Cursors (Cursore moderno per Niri)
+# COPR mise (Polyglot dev tool & runtime manager)
+curl --output-dir "/etc/yum.repos.d/" \
+  --remote-name "https://copr.fedorainfracloud.org/coprs/jdxcode/mise/repo/fedora-$(rpm -E %fedora)/jdxcode-mise-fedora-$(rpm -E %fedora).repo"
+
+# COPR Bibata Cursors (Cursore moderno per Niri) valida alternativa molto bella
 # curl -Lo /etc/yum.repos.d/peterwu.repo \
 #   https://copr.fedorainfracloud.org/coprs/peterwu/rendezvous/repo/fedora-$(rpm -E %fedora)/peterwu-rendezvous-fedora-$(rpm -E %fedora).repo
 
@@ -56,7 +60,9 @@ dnf5 -y install \
   zoxide \
   zsh-autosuggestions \
   zsh-syntax-highlighting \
-  util-linux-user
+  util-linux-user \
+  mise \
+  chezmoi
 
 # Autenticazione Polkit, Utilità di sistema & Strumenti
 dnf5 -y install \

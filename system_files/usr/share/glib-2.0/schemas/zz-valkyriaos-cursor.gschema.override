@@ -1,3 +1,4 @@
 [org.gnome.desktop.interface]
 cursor-theme='McMojave-cursors'
 cursor-size=24
+monospace-font-name='CommitMonoGyratina 16'

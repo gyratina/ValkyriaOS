@@ -107,9 +107,15 @@ curl -fsSL https://github.com/LargeModGames/spotatui/releases/latest/download/sp
 tar -xzf /tmp/spotatui.tar.gz -C /usr/bin/
 rm -f /tmp/spotatui.tar.gz
 
-# 6. Configurazione Shell di Default
-# Imposta Zsh come shell predefinita per i nuovi utenti
+# 6. Configurazione Utente di Default
+# Imposta Zsh come shell predefinita e il gruppo nordvpn per i nuovi utenti
+groupadd -f nordvpn
 sed -i 's|^SHELL=.*|SHELL=/bin/zsh|' /etc/default/useradd
+if grep -q "^GROUPS=" /etc/default/useradd; then
+  sed -i 's|^GROUPS=.*|GROUPS=nordvpn|' /etc/default/useradd
+else
+  echo "GROUPS=nordvpn" >> /etc/default/useradd
+fi
 
 # 6. Display Manager & System Services
 # Abilitazione GDM (Display Manager ufficiale che supporta nativamente Niri e GNOME)
@@ -129,8 +135,9 @@ if [ -d "/ctx/dot_config" ]; then
   cp -rf /ctx/dot_config/* /etc/skel/.config/
 fi
 
-# 7. GLib Schemas compilation
+# 7. GLib Schemas & Font Cache compilation
 glib-compile-schemas /usr/share/glib-2.0/schemas/
+fc-cache -f /usr/share/fonts
 
 # 8. Branding Ufficiale ValkyriaOS (Identità per fastfetch, GNOME Settings e os-release)
 sed -i 's|^NAME=.*|NAME="ValkyriaOS"|' /usr/lib/os-release

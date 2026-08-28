@@ -56,6 +56,7 @@ dnf5 -y install \
 
 # Shell ZSH & Strumenti CLI
 dnf5 -y install \
+  gh \
   zsh \
   zoxide \
   zsh-autosuggestions \

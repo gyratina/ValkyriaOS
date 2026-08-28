@@ -115,11 +115,13 @@ sed -i 's|^SHELL=.*|SHELL=/bin/zsh|' /etc/default/useradd
 # Abilitazione GDM (Display Manager ufficiale che supporta nativamente Niri e GNOME)
 systemctl enable gdm.service
 
-# Abilitazione servizi di sistema
+# Abilitazione servizi di sistema e utente
 systemctl enable podman.socket
 systemctl enable libvirtd.service
 systemctl enable default-flatpaks.service
 systemctl enable nordvpnd.service
+chmod +x /usr/libexec/chezmoi-sync.sh
+systemctl --global enable chezmoi-sync.service
 
 # 6. Default User Skeleton / Dotfiles Configuration
 if [ -d "/ctx/dot_config" ]; then

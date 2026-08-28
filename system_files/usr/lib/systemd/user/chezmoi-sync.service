@@ -1,0 +1,13 @@
+[Unit]
+Description=ValkyriaOS Dotfiles Automatic Sync with Chezmoi
+Documentation=https://github.com/gyratina/dotfiles
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/chezmoi-sync.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

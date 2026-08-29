@@ -66,7 +66,7 @@ dnf5 -y install \
   chezmoi \
   eza
 
-# Autenticazione Polkit, Utilità di sistema & Strumenti
+# Autenticazione Polkit, Utilità di sistema, Lingua & Strumenti
 dnf5 -y install \
   lxpolkit \
   lxqt-openssh-askpass \
@@ -76,8 +76,9 @@ dnf5 -y install \
   just \
   seahorse \
   android-tools \
-  iperf3
-  # bibata-cursor-themes
+  iperf3 \
+  glibc-langpack-it \
+  langpacks-it
 
 # Installazione e configurazione Cursori McMojave come predefiniti
 git clone --depth 1 https://github.com/vinceliuice/McMojave-cursors.git /tmp/mcmojave
@@ -143,7 +144,7 @@ fc-cache -f /usr/share/fonts
 # 8. Branding Ufficiale ValkyriaOS (Identità per fastfetch, GNOME Settings e os-release)
 sed -i 's|^NAME=.*|NAME="ValkyriaOS"|' /usr/lib/os-release
 sed -i 's|^PRETTY_NAME=.*|PRETTY_NAME="ValkyriaOS"|' /usr/lib/os-release
-sed -i 's|^ID=.*|ID=valkyriaos|' /usr/lib/os-release
+sed -i 's|^ID=.*|ID=fedora|' /usr/lib/os-release
 sed -i 's|^ID_LIKE=.*|ID_LIKE="bluefin fedora"|' /usr/lib/os-release
 sed -i 's|^VARIANT=.*|VARIANT="ValkyriaOS"|' /usr/lib/os-release
 sed -i 's|^VARIANT_ID=.*|VARIANT_ID=valkyriaos|' /usr/lib/os-release

@@ -5,8 +5,8 @@ ValkyriaOS is an image built on top of Bluefin Linux image, thank to the [image-
 So in short: ValkyriaOS is an atomic linux distro based on Bluefin which is based on rpm-ostree.
 
 > [!WARNING]
-> 
 > **ValkyriaOS depends on my habits!**
+>
 > I created this distro to cover my half satisfaction with Bluefin, so I don't recommend daily driving it to anyone because the default software or tools installed may change with pass of time in case I want it.
 > So keep in mind that I'll never care about any other user besides myself.
 

@@ -2,3 +2,6 @@
 cursor-theme='McMojave-cursors'
 cursor-size=24
 monospace-font-name='CommitMonoGyratina 16'
+
+[org.gnome.system.locale]
+region='it_IT.UTF-8'

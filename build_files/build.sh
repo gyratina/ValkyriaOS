@@ -63,7 +63,8 @@ dnf5 -y install \
   zsh-syntax-highlighting \
   util-linux-user \
   mise \
-  chezmoi
+  chezmoi \
+  eza
 
 # Autenticazione Polkit, Utilità di sistema & Strumenti
 dnf5 -y install \

@@ -137,7 +137,7 @@ systemctl enable libvirtd.service
 systemctl enable default-flatpaks.service
 systemctl enable nordvpn-setup.service
 systemctl enable nordvpnd.service
-chmod +x /usr/libexec/chezmoi-sync.sh
+chmod +x /usr/libexec/chezmoi-sync.sh /usr/libexec/valkyria-nordvpn-setup.sh /usr/libexec/valkyria-switch-layout.sh
 systemctl --global enable chezmoi-sync.service
 
 # 6. Default User Skeleton / Dotfiles Configuration
@@ -150,8 +150,9 @@ mkdir -p /etc/skel/.config
 touch /etc/skel/.config/no-show-user-motd
 rm -f /etc/profile.d/user-motd.sh /etc/profile.d/ublue-os-just.sh /etc/profile.d/ublue-motd.sh /etc/profile.d/ublue-user-motd.sh 2>/dev/null || true
 
-# 7. GLib Schemas & Font Cache compilation
+# 7. GLib Schemas, DConf & Font Cache compilation
 glib-compile-schemas /usr/share/glib-2.0/schemas/
+dconf update 2>/dev/null || true
 fc-cache -f /usr/share/fonts
 
 # 8. Branding Ufficiale ValkyriaOS (Identità per fastfetch, GNOME Settings e os-release)

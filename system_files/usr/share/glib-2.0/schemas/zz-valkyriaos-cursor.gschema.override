@@ -8,7 +8,7 @@ region='it_IT.UTF-8'
 
 [org.gnome.desktop.input-sources]
 sources=[('xkb', 'it'), ('xkb', 'us+altgr-intl')]
-xkb-options=['grp:win_space_toggle']
+xkb-options=@as []
 
 [org.gnome.desktop.wm.keybindings]
 switch-input-source=['<Super>space']

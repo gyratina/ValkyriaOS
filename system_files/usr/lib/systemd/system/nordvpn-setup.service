@@ -6,12 +6,7 @@ ConditionPathExists=!/var/lib/valkyriaos-nordvpn-setup
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bash -c '\
-  groupadd -f nordvpn; \
-  for u in $(awk -F: "$3 >= 1000 && $1 != \"nobody\" {print $1}" /etc/passwd); do \
-    usermod -aG nordvpn "$u" 2>/dev/null || true; \
-  done; \
-  touch /var/lib/valkyriaos-nordvpn-setup'
+ExecStart=/usr/libexec/valkyria-nordvpn-setup.sh
 RemainAfterExit=yes
 
 [Install]

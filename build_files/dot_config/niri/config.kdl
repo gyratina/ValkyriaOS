@@ -270,6 +270,7 @@ layout {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // Start Dank Material Shell and Polkit agent at startup
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP=niri"
+spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets,pkcs11,ssh"
 spawn-at-startup "dms" "run"
 spawn-sh-at-startup "lxpolkit"
 
@@ -603,8 +604,8 @@ binds {
     // a matching layout switch hotkey configured in xkb options above.
     // Having both at once on the same hotkey will break the switching,
     // since it will switch twice upon pressing the hotkey (once by xkb, once by niri).
-    Mod+Space       { switch-layout "next"; }
-    Mod+Shift+Space { switch-layout "prev"; }
+    Mod+Space       { spawn-sh "/usr/libexec/valkyria-switch-layout.sh next"; }
+    Mod+Shift+Space { spawn-sh "/usr/libexec/valkyria-switch-layout.sh prev"; }
 
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }

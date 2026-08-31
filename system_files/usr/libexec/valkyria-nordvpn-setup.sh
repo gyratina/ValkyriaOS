@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+groupadd -f nordvpn
+
+# Aggiunge tutti gli utenti con UID >= 1000 al gruppo nordvpn
+while IFS=: read -r username _ uid _ _ _ _; do
+  if [ -n "$uid" ] && [ "$uid" -ge 1000 ] 2>/dev/null && [ "$username" != "nobody" ]; then
+    usermod -aG nordvpn "$username" 2>/dev/null || true
+  fi
+done < /etc/passwd
+
+touch /var/lib/valkyriaos-nordvpn-setup

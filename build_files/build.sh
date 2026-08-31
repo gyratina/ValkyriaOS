@@ -110,7 +110,7 @@ tar -xzf /tmp/spotatui.tar.gz -C /usr/bin/
 rm -f /tmp/spotatui.tar.gz
 
 # Antigravity CLI (agy)
-curl -fsSL https://antigravity.google/cli/install.sh | bash
+HOME=/tmp bash -c 'curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --dir /usr/bin'
 
 # 6. Configurazione Utente di Default
 # Imposta Zsh come shell predefinita e il gruppo nordvpn per i nuovi utenti

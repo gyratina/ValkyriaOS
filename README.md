@@ -26,6 +26,7 @@ So in short: ValkyriaOS is an atomic linux distro based on Bluefin which is base
 - **GitHub CLI (`gh`)**.
 - **NordVPN**: CLI + GUI with daemon and user permissions.
 - [**Spotatui**](https://github.com/LargeModGames/spotatui).
+- **Antigravity CLI (`agy`)**.
 
 ### Terminal Shell
 - **Zsh**: Default user shell.

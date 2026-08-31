@@ -109,6 +109,9 @@ curl -fsSL https://github.com/LargeModGames/spotatui/releases/latest/download/sp
 tar -xzf /tmp/spotatui.tar.gz -C /usr/bin/
 rm -f /tmp/spotatui.tar.gz
 
+# Antigravity CLI (agy)
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+
 # 6. Configurazione Utente di Default
 # Imposta Zsh come shell predefinita e il gruppo nordvpn per i nuovi utenti
 groupadd -f nordvpn
@@ -136,6 +139,10 @@ if [ -d "/ctx/dot_config" ]; then
   mkdir -p /etc/skel/.config
   cp -rf /ctx/dot_config/* /etc/skel/.config/
 fi
+# Disabilita il banner Bluefin/Universal-Blue MOTD all'apertura del terminale
+mkdir -p /etc/skel/.config
+touch /etc/skel/.config/no-show-user-motd
+rm -f /etc/profile.d/user-motd.sh /etc/profile.d/ublue-os-just.sh /etc/profile.d/ublue-motd.sh /etc/profile.d/ublue-user-motd.sh 2>/dev/null || true
 
 # 7. GLib Schemas & Font Cache compilation
 glib-compile-schemas /usr/share/glib-2.0/schemas/

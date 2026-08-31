@@ -5,3 +5,11 @@ monospace-font-name='CommitMonoGyratina 16'
 
 [org.gnome.system.locale]
 region='it_IT.UTF-8'
+
+[org.gnome.desktop.input-sources]
+sources=[('xkb', 'it'), ('xkb', 'us+altgr-intl')]
+xkb-options=['grp:win_space_toggle']
+
+[org.gnome.desktop.wm.keybindings]
+switch-input-source=['<Super>space']
+switch-input-source-backward=['<Shift><Super>space']

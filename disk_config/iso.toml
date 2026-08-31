@@ -1,6 +1,17 @@
 [customizations.installer.kickstart]
 contents = """
-%post
+network --hostname=Valkyria
+%post --log=/var/log/anaconda-flatpaks.log
+echo "Valkyria" > /etc/hostname
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || true
+flatpak remote-delete --force anime-game-launcher 2>/dev/null || true
+flatpak uninstall -y --system --noninteractive org.mozilla.firefox org.mozilla.Thunderbird moe.launcher.an-anime-game-launcher 2>/dev/null || true
+if [ -f /etc/default-flatpaks.list ]; then
+  while read -r app; do
+    [ -n "$app" ] && [[ ! "$app" =~ ^# ]] && flatpak install -y --system --noninteractive flathub "$app" 2>/dev/null || true
+  done < /etc/default-flatpaks.list
+fi
+touch /var/lib/valkyriaos-flatpaks-installed
 bootc switch --mutate-in-place --transport registry ghcr.io/gyratina/valkyriaos:latest
 %end
 """

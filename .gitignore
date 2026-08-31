@@ -1,6 +1,6 @@
 cosign.key
 _build_*
-output
+output/
 _build-*/**
 *_chunkah_*
 *_rpm-ostree_*

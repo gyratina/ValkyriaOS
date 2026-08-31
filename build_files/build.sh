@@ -112,6 +112,11 @@ rm -f /tmp/spotatui.tar.gz
 # Antigravity CLI (agy)
 HOME=/tmp bash -c 'curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --dir /usr/bin'
 
+# Collegamento per avviare Zed Editor con il comando 'zed'
+if [ -f /usr/bin/zeditor ]; then
+  ln -sf /usr/bin/zeditor /usr/local/bin/zed || true
+fi
+
 # 6. Configurazione Utente di Default
 # Imposta Zsh come shell predefinita e il gruppo nordvpn per i nuovi utenti
 groupadd -f nordvpn
@@ -130,6 +135,7 @@ systemctl enable gdm.service
 systemctl enable podman.socket
 systemctl enable libvirtd.service
 systemctl enable default-flatpaks.service
+systemctl enable nordvpn-setup.service
 systemctl enable nordvpnd.service
 chmod +x /usr/libexec/chezmoi-sync.sh
 systemctl --global enable chezmoi-sync.service
@@ -149,6 +155,7 @@ glib-compile-schemas /usr/share/glib-2.0/schemas/
 fc-cache -f /usr/share/fonts
 
 # 8. Branding Ufficiale ValkyriaOS (Identità per fastfetch, GNOME Settings e os-release)
+echo "Valkyria" > /etc/hostname
 sed -i 's|^NAME=.*|NAME="ValkyriaOS"|' /usr/lib/os-release
 sed -i 's|^PRETTY_NAME=.*|PRETTY_NAME="ValkyriaOS"|' /usr/lib/os-release
 sed -i 's|^ID=.*|ID=fedora|' /usr/lib/os-release

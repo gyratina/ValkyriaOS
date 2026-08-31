@@ -1,0 +1,18 @@
+[Unit]
+Description=ValkyriaOS NordVPN Group Setup
+After=systemd-user-sessions.service
+Before=nordvpnd.service
+ConditionPathExists=!/var/lib/valkyriaos-nordvpn-setup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c '\
+  groupadd -f nordvpn; \
+  for u in $(awk -F: "$3 >= 1000 && $1 != \"nobody\" {print $1}" /etc/passwd); do \
+    usermod -aG nordvpn "$u" 2>/dev/null || true; \
+  done; \
+  touch /var/lib/valkyriaos-nordvpn-setup'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

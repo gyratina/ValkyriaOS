@@ -1,7 +1,0 @@
-[org/gnome/desktop/input-sources]
-sources=[('xkb', 'it'), ('xkb', 'us+altgr-intl')]
-xkb-options=@as []
-
-[org/gnome/desktop/wm/keybindings]
-switch-input-source=['<Super>space']
-switch-input-source-backward=['<Shift><Super>space']

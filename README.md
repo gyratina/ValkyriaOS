@@ -103,12 +103,12 @@ ValkyriaOS is a custom bootc image Linux Distro based on [Bluefin Linux](https:/
   - `page.tesk.Refine`
 
 ## Installation
-If you really want to try this distro, there are two ways that you can choose, but i recommend the first one.
-
 > [!WARNING]
 > **There is no NVIDIA GPUs support!**
 >
 > Once upon a time, a wise daddy of a famous penguin said these words: _"so... f*ck you nvidia!"_.
+
+If you really want to try this distro, there are two ways that you can choose, but i recommend the first one.
 
 #### Method 1: Install Bluefin first, and then switch to ValkyriaOS
 

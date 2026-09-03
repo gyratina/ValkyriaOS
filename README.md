@@ -102,8 +102,32 @@ ValkyriaOS is a custom bootc image Linux Distro based on [Bluefin Linux](https:/
   - `org.freedesktop.Platform.VulkanLayer.MangoHud`
   - `page.tesk.Refine`
 
+## Installation
+If you really want to try this distro, there are two ways that you can choose, but i recommend the first one.
+
+> [!WARNING]
+> **There is no NVIDIA GPUs support!**
+>
+> Once upon a time, a wise daddy of a famous penguin said these words: _"so... f*ck you nvidia!"_.
+
+#### Method 1: Install Bluefin first, and then switch to ValkyriaOS
+
+After having installed [Bluefin](https://projectbluefin.io/), do this command into the terminal:
+```zsh
+sudo bootc switch ghcr.io/gyratina/valkyriaos:latest
+```
+
+#### Method 2: Install ValkyriaOS via ISO
+If you're here and you don't know what an ISO is, or how to use it... why tf are u here then?
+
+I don't recommend this method of installation because I don't think that I'll manually update the ISO file every time for anyone else beside me.
+So if you want to proceed, you can install ValkyriaOS's ISO file from [here](https://mega.nz/file/a7ZwHKZK#-EIIPJRPEGrsmjhvhBq2AlTZDW0Ji4APnqM00JxP9xI), but remember to immediately upgrade the distro's image with this command into your terminal:
+```zsh
+sudo bootc upgrade
+```
+
 ---
 
 ## Special Thanks
 - **[morrolinux](https://www.youtube.com/@morrolinux)'s image: [morros](https://github.com/morrolinux/morros)** - I used it as ispiration to learn how to build my image, mainly because it included parts of my current configuration that I used as a starting point, and because his video introduced me to the ublue template.
-- **Gemini 3.7 Flash** - I already imagine someone calling me a vibe coder lol, but that's not true. For sure without AI it would have taken sooo much longer to me to figure out how to build some things, but I used AI with two main goals: Building the perfect distro for my habits but also learning something new and understanding how and why it work. I truly believe that AI can be a powerful tool for every human being, if used to satisfy our curiosity and thirst for knowledge, but with a pinch of mistrust due to the possibility of hallucinations.
+- **Gemini 3.7 Flash** - I already imagine someone calling me a vibe coder lol, but that's not true. For sure without AI it would have taken sooo much longer to me to figure out how to build some things, but I used AI with two main goals: Building the perfect distro for my habits but also learning something new and understanding how and why it works. I truly believe that AI can be a powerful tool for every human being if used to satisfy our curiosity and thirst for knowledge, but with a pinch of mistrust due to the possibility of hallucinations.

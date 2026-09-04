@@ -49,6 +49,12 @@ dnf5 -y install \
   wlr-randr \
   --allowerasing
 
+# Allinea le librerie Qt6 per garantire compatibilità ABI con la nuova build di Quickshell
+dnf5 -y upgrade "qt6-*" --allowerasing
+
+# Test di integrità: verifica che Quickshell si colleghi correttamente alle librerie Qt6
+qs --version
+
 # Terminale ed Editor
 dnf5 -y install \
   ghostty \
